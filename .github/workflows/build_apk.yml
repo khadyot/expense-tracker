@@ -1,0 +1,45 @@
+name: Build & Update Release APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build_release_apk:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Dependencies
+        working-directory: ./expense_tracker
+        run: flutter pub get
+
+      - name: Build Release APK
+        working-directory: ./expense_tracker
+        run: flutter build apk --release
+
+      - name: Rename APK
+        working-directory: ./expense_tracker
+        run: cp build/app/outputs/flutter-apk/app-release.apk ../expense-tracker-v1.0.0.apk
+
+      - name: Upload APK to GitHub Release v1.0.0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload v1.0.0 expense-tracker-v1.0.0.apk --clobber
