@@ -1,0 +1,64 @@
+name: expense_tracker
+description: A local-first expense tracker with SMS parsing and voice input.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Database
+  drift: ^2.22.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.1.0
+  path: ^1.8.0
+  
+  # Speech & Local Parsing
+  speech_to_text: ^7.0.0
+  string_similarity: ^2.0.0
+  
+  # Permissions
+  permission_handler: ^11.3.1
+  
+  # UI Components
+  fl_chart: ^0.69.0
+  intl: ^0.19.0
+  flutter_local_notifications: ^18.0.0
+  timezone: ^0.9.4
+  
+  # State Management
+  provider: ^6.1.0
+  shared_preferences: ^2.2.2
+
+  # Security & Data
+  local_auth: ^2.3.0
+  csv: ^6.0.0
+  share_plus: ^10.1.0
+  flutter_secure_storage: ^9.2.2
+
+  # Utils
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  drift_dev: ^2.22.0
+  build_runner: ^2.4.0
+
+flutter:
+  uses-material-design: true
+  
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700

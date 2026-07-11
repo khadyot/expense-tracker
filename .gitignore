@@ -1,0 +1,24 @@
+# Root gitignore
+.DS_Store
+*.log
+.gemini/
+.agents/
+
+# Expense tracker build artifacts
+expense_tracker/build/
+expense_tracker/.dart_tool/
+expense_tracker/.flutter-plugins-dependencies
+expense_tracker/.pub-cache/
+expense_tracker/.pub/
+expense_tracker/**/doc/api/
+expense_tracker/**/*.last_build_id
+expense_tracker/android/app/debug/
+expense_tracker/android/app/profile/
+expense_tracker/android/app/release/
+expense_tracker/.idea/
+expense_tracker/*.iml
+
+# Vercel
+.vercel/
+landing_page/.vercel/
+expense_tracker/.vercel/
