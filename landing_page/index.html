@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="background-glow glow-1"></div>
-    <div class="background-glow glow-2"></div>
+    <div class="background-accent accent-1"></div>
+    <div class="background-accent accent-2"></div>
 
     <nav class="navbar">
         <div class="nav-brand">
@@ -33,7 +33,7 @@
                 <span class="pulse-dot"></span>
                 <span>Local-First • Privacy Preserving • Zero Cloud Sync</span>
             </div>
-            <h1 class="hero-title">Financial Clarity.<br><span class="gradient-text">Zero Data Leakage.</span></h1>
+            <h1 class="hero-title">Financial Clarity.<br><span class="coral-text">Zero Data Leakage.</span></h1>
             <p class="hero-subtitle">
                 A modern Flutter & Drift (SQLite) portfolio application demonstrating native OS bridge integration for automated SMS expense parsing and cross-platform WebAssembly local persistence.
             </p>
@@ -41,7 +41,7 @@
                 <a href="https://expense-tracker-demo-wheat.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-primary">
                     <span class="btn-icon">🌐</span> Launch Web Demo (WASM)
                 </a>
-                <a href="https://github.com/khadyot/expense-tracker/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="btn-glass">
+                <a href="https://github.com/khadyot/expense-tracker/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="btn-secondary">
                     <span class="btn-icon">📱</span> Download Android APK (v1.0.0)
                 </a>
             </div>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="hero-preview">
-            <div class="glass-card preview-card">
+            <div class="soft-card preview-card">
                 <div class="card-header">
                     <div class="header-status">
                         <span class="status-dot"></span>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="gauge-info">
                         <span class="gauge-label">Monthly Budget Used</span>
-                        <span class="gauge-value">$1,840 <small>/ $2,500</small></span>
+                        <span class="gauge-value">₹1,840 <small>/ ₹2,500</small></span>
                     </div>
                 </div>
                 <div class="transaction-list-mock">
@@ -76,7 +76,7 @@
                             <strong>Starbucks Coffee</strong>
                             <span>Food & Dining • SMS Auto-Parsed</span>
                         </div>
-                        <div class="item-amount">- $6.45</div>
+                        <div class="item-amount">- ₹340.00</div>
                     </div>
                     <div class="mock-item">
                         <div class="item-icon recurring-icon">👻</div>
@@ -84,7 +84,7 @@
                             <strong>Netflix Subscription</strong>
                             <span>Ghost Bill Prediction • Recurring</span>
                         </div>
-                        <div class="item-amount">- $15.99</div>
+                        <div class="item-amount">- ₹649.00</div>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
         </div>
 
         <div class="features-grid">
-            <div class="glass-card feature-card">
+            <div class="soft-card feature-card">
                 <div class="feature-icon">🤖</div>
                 <h3>Native SMS Auto-Parsing</h3>
                 <p>On Android, our Kotlin <code>SmsReceiver.kt</code> intercepts transactional SMS broadcasts in real-time. It extracts merchants, amounts, and payment sources locally using pattern regex without ever sending your messages to a remote server.</p>
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="glass-card feature-card">
+            <div class="soft-card feature-card">
                 <div class="feature-icon">📦</div>
                 <h3>Drift SQLite WebAssembly</h3>
                 <p>The web target utilizes compiled <code>sqlite3.wasm</code> alongside dedicated web workers to bring native-grade relational database queries and reactive stream subscriptions directly into the browser's IndexedDB sandbox.</p>
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            <div class="glass-card feature-card">
+            <div class="soft-card feature-card">
                 <div class="feature-icon">👻</div>
                 <h3>Ghost Bills Prediction Engine</h3>
                 <p>Proprietary local statistical analysis identifies recurring subscription patterns across your transaction history, predicting upcoming liabilities and reserving budget headroom before charges hit your account.</p>
@@ -128,20 +128,20 @@
                 </div>
             </div>
 
-            <div class="glass-card feature-card">
+            <div class="soft-card feature-card">
                 <div class="feature-icon">🎨</div>
-                <h3>Glassmorphism UI Design</h3>
-                <p>Built strictly according to curated HSL color tokens, Outfit typography, and dynamic blur hierarchy (`backdrop-filter: blur(16px)`), giving users a visually stunning, premium dashboard aesthetic across dark and light modes.</p>
+                <h3>v3 Warm Cream & Coral System</h3>
+                <p>Built strictly according to curated Soft Card layout tokens (`#F8F6F0` Warm Cream background, `#1C1917` solid black pill buttons, `#FF6B4A` to `#FF8F6B` hero gradients), giving users a flat, ultra-clean, state-of-the-art aesthetic without heavy blurs.</p>
                 <div class="tag-row">
                     <span class="tag">Flutter CanvasKit</span>
-                    <span class="tag">Fluid Micro-Animations</span>
+                    <span class="tag">Flat Soft Cards</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="architecture" class="architecture-section">
-        <div class="glass-card arch-card">
+        <div class="soft-card arch-card">
             <div class="arch-content">
                 <h2>Why Platform-Gating Matters</h2>
                 <p>
