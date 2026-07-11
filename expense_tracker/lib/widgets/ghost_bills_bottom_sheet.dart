@@ -3,7 +3,7 @@ import '../database/database.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_colors.dart';
 import 'transaction_items.dart';
-import 'common/glass_container.dart';
+import 'common/soft_card.dart';
 
 class GhostBillsBottomSheet extends StatelessWidget {
   final AppDatabase database;
@@ -21,12 +21,14 @@ class GhostBillsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return DraggableScrollableSheet(
       initialChildSize: 0.65,
       minChildSize: 0.4,
       maxChildSize: 0.85,
       builder: (context, scrollController) {
-        return GlassContainer(
+        return SoftCard(
           borderRadius: 28.0,
           margin: const EdgeInsets.only(top: 24),
           child: Column(
@@ -50,26 +52,31 @@ class GhostBillsBottomSheet extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppColors.warningBorder.withValues(alpha: 0.15),
+                        color:
+                            AppColors.heroGradientStart.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Icon(
-                        Icons.auto_awesome,
-                        color: AppColors.warningBorder,
+                      child: const Icon(
+                        Icons.auto_awesome_rounded,
+                        color: AppColors.heroGradientStart,
                         size: 20,
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
+                    Text(
                       'All Upcoming Bills',
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Outfit',
+                        color: isDark ? AppTheme.textLight : AppTheme.textDark,
                       ),
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: const Icon(Icons.close),
+                      icon: Icon(Icons.close_rounded,
+                          color:
+                              isDark ? AppTheme.textLight : AppTheme.textDark),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                   ],
@@ -97,7 +104,7 @@ class GhostBillsBottomSheet extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.event_busy,
+                              Icons.event_busy_rounded,
                               size: 48,
                               color: Colors.grey.withValues(alpha: 0.5),
                             ),
@@ -106,10 +113,10 @@ class GhostBillsBottomSheet extends StatelessWidget {
                               'No upcoming bills predicted yet.',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
+                                color: isDark
                                     ? AppTheme.textGrayDark
                                     : AppTheme.textGrayLight,
+                                fontFamily: 'Inter',
                               ),
                             ),
                           ],

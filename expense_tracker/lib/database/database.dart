@@ -71,8 +71,19 @@ class AppDatabase extends _$AppDatabase {
     return into(transactions).insert(transaction);
   }
 
-  Future<bool> updateTransaction(TransactionsCompanion transaction) {
+  Future<bool> updateTransaction(Insertable<Transaction> transaction) {
     return update(transactions).replace(transaction);
+  }
+
+  Future<List<String>> getUniqueMerchants({bool isIncome = false}) async {
+    final query = selectOnly(transactions, distinct: true)
+      ..addColumns([transactions.merchant]);
+    final results =
+        await query.map((row) => row.read(transactions.merchant)).get();
+    return results
+        .where((m) => m != null && m.trim().isNotEmpty)
+        .map((m) => m!.trim())
+        .toList();
   }
 
   Future<int> deleteAllTransactions() {

@@ -16,94 +16,75 @@ class TransactionListItem extends StatelessWidget {
     this.onTap,
   });
 
+  bool _isIncome(String category) {
+    final c = category.toLowerCase();
+    return c == 'salary' ||
+        c == 'investment returns' ||
+        c == 'other income' ||
+        c == 'income' ||
+        c == 'bonus';
+  }
+
   IconData _getCategoryIcon(String category) {
     switch (category) {
       case 'Groceries':
-        return Icons.shopping_basket;
+        return Icons.shopping_basket_rounded;
       case 'Travel':
-        return Icons.flight;
+        return Icons.flight_rounded;
       case 'Car':
-        return Icons.directions_car;
+        return Icons.directions_car_rounded;
       case 'Home':
       case 'Rent':
-        return Icons.home;
-      case 'Salary':
-        return Icons.work;
-      case 'Investment Returns':
-        return Icons.trending_up;
-      default:
-        return Icons.payment;
-    }
-  }
-
-  Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Groceries':
-        return AppTheme.groceries;
-      case 'Travel':
-        return AppTheme.travel;
-      case 'Car':
-        return AppTheme.car;
-      case 'Home':
-        return AppTheme.home;
+        return Icons.home_rounded;
       case 'Salary':
       case 'Investment Returns':
-      case 'Rent':
-      case 'Other Income': // Assuming this is used
-        return Colors.green;
+      case 'Other Income':
+        return Icons.work_rounded;
       default:
-        return AppTheme.primaryPurple;
-    }
-  }
-
-  String _getSourceBadge(String source) {
-    switch (source) {
-      case 'sms':
-        return 'SMS';
-      case 'voice':
-        return 'VOICE';
-      case 'manual':
-        return 'MANUAL';
-      default:
-        return '';
+        return Icons.payment_rounded;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final categoryColor = _getCategoryColor(transaction.category);
-    final dateFormat = DateFormat('MMM dd, yyyy');
+    final categoryColor = AppColors.getCategoryDotColor(transaction.category);
+    final dateFormat = DateFormat('MMM dd, yyyy • h:mm a');
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isInc = _isIncome(transaction.category);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: AppTheme.glassmorphism(),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      decoration: AppTheme.softDecoration(
+        isDark: isDark,
+        borderRadius: 20,
+      ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
             child: Row(
               children: [
-                // Category Icon
+                // Circular merchant icon/avatar on the left
                 Container(
-                  width: 48,
-                  height: 48,
+                  width: 46,
+                  height: 46,
                   decoration: BoxDecoration(
-                    color: categoryColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
+                    color: categoryColor.withValues(alpha: 0.14),
+                    shape: BoxShape.circle,
                   ),
                   child: Icon(
                     _getCategoryIcon(transaction.category),
                     color: categoryColor,
-                    size: 24,
+                    size: 22,
                   ),
                 ),
 
-                const SizedBox(width: 16),
+                const SizedBox(width: 14),
 
-                // Transaction Details
+                // Merchant name and timestamp stacked
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,68 +94,90 @@ class TransactionListItem extends StatelessWidget {
                           Expanded(
                             child: Text(
                               transaction.merchant,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? AppTheme.textLight
+                                    : AppTheme.textDark,
+                                fontFamily: 'Inter',
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          if (transaction.source != 'manual')
+                          if (transaction.source != 'manual') ...[
+                            const SizedBox(width: 6),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 6,
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: AppTheme.primaryPurple.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(4),
+                                color: AppColors.darkAccent
+                                    .withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                _getSourceBadge(transaction.source),
-                                style: const TextStyle(
+                                transaction.source.toUpperCase(),
+                                style: TextStyle(
                                   fontSize: 9,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.primaryPurple,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? AppTheme.textGrayDark
+                                      : AppTheme.textGrayLight,
+                                  fontFamily: 'Inter',
                                 ),
                               ),
                             ),
+                          ],
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 3),
                       Row(
                         children: [
-                          Flexible(
-                            child: Text(
-                              transaction.category,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: categoryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: categoryColor,
+                              shape: BoxShape.circle,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 6),
+                          Text(
+                            transaction.category,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDark
+                                  ? AppTheme.textGrayDark
+                                  : AppTheme.textGrayLight,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
                           Text(
                             '•',
                             style: TextStyle(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
+                              fontSize: 12,
+                              color: isDark
                                   ? AppTheme.textGrayDark
                                   : AppTheme.textGrayLight,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            dateFormat.format(transaction.date),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? AppTheme.textGrayDark
-                                  : AppTheme.textGrayLight,
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              dateFormat.format(transaction.date),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isDark
+                                    ? AppTheme.textGrayDark
+                                    : AppTheme.textGrayLight,
+                                fontFamily: 'Inter',
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -183,20 +186,27 @@ class TransactionListItem extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
 
-                // Amount
+                // Tabular amount right-aligned and colored per v3 spec
                 Consumer<UserProvider>(
                   builder: (context, user, child) {
+                    final prefix = isInc ? '+₹' : '-₹';
+                    final amountFormatted = user.isPrivacyModeEnabled
+                        ? '$prefix****'
+                        : '$prefix${transaction.amount.toStringAsFixed(2)}';
+
                     return Text(
-                      user.isPrivacyModeEnabled
-                          ? '₹****'
-                          : '₹${transaction.amount.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.primaryPurple,
+                      amountFormatted,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Outfit',
+                        color: isInc
+                            ? const Color(0xFF10B981)
+                            : const Color(0xFFE63920),
                       ),
+                      textAlign: TextAlign.right,
                     );
                   },
                 ),
@@ -221,45 +231,37 @@ class GhostBillItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('MMM dd');
     final daysUntil = bill.nextDueDate.difference(DateTime.now()).inDays;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final categoryColor = AppColors.getCategoryDotColor(bill.merchant);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.primaryPurple.withOpacity(0.05),
-            AppTheme.lightPurple.withOpacity(0.05),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppTheme.primaryPurple.withOpacity(0.2),
-          width: 1,
-          strokeAlign: BorderSide.strokeAlignInside,
-        ),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      decoration: AppTheme.softDecoration(
+        isDark: isDark,
+        borderRadius: 20,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         child: Row(
           children: [
-            // Ghost Icon
+            // Circular icon on the left
             Container(
-              width: 48,
-              height: 48,
+              width: 46,
+              height: 46,
               decoration: BoxDecoration(
-                color: AppTheme.primaryPurple.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: categoryColor.withValues(alpha: 0.14),
+                shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.auto_awesome_outlined,
-                color: AppTheme.primaryPurple,
-                size: 24,
+              child: Icon(
+                Icons.auto_awesome_rounded,
+                color: categoryColor,
+                size: 22,
               ),
             ),
 
-            const SizedBox(width: 16),
+            const SizedBox(width: 14),
 
-            // Bill Details
+            // Merchant Details Stacked
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,9 +271,12 @@ class GhostBillItem extends StatelessWidget {
                       Expanded(
                         child: Text(
                           bill.merchant,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
+                            color:
+                                isDark ? AppTheme.textLight : AppTheme.textDark,
+                            fontFamily: 'Inter',
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -285,50 +290,56 @@ class GhostBillItem extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: bill.isInferred
                               ? AppColors.warningBorder.withValues(alpha: 0.2)
-                              : AppTheme.primaryPurple.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(4),
+                              : AppColors.heroGradientStart
+                                  .withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           bill.isInferred ? 'PREDICTED' : 'CONFIRMED',
                           style: TextStyle(
                             fontSize: 9,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Inter',
                             color: bill.isInferred
-                                ? AppColors.warningBorder
-                                : AppTheme.primaryPurple,
+                                ? (isDark
+                                    ? const Color(0xFFFDE047)
+                                    : const Color(0xFFCA8A04))
+                                : AppColors.heroGradientStart,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 3),
                   Row(
                     children: [
                       Text(
                         bill.frequency.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppTheme.primaryPurple,
-                          fontWeight: FontWeight.w500,
+                          color: categoryColor,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Text(
                         '•',
                         style: TextStyle(
-                          color: Theme.of(context).brightness == Brightness.dark
+                          color: isDark
                               ? AppTheme.textGrayDark
                               : AppTheme.textGrayLight,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Text(
-                        'Due ${dateFormat.format(bill.nextDueDate)} ($daysUntil days)',
+                        'Due ${dateFormat.format(bill.nextDueDate)} (${daysUntil >= 0 ? "$daysUntil d" : "Overdue"})',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Theme.of(context).brightness == Brightness.dark
+                          color: isDark
                               ? AppTheme.textGrayDark
                               : AppTheme.textGrayLight,
+                          fontFamily: 'Inter',
                         ),
                       ),
                     ],
@@ -337,38 +348,40 @@ class GhostBillItem extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
 
-            // Predicted Amount
+            // Right-aligned colored amount per v3 spec
             Consumer<UserProvider>(
               builder: (context, user, child) {
-                final amountPrefix = bill.isInferred ? '≈ ₹' : '₹';
+                final prefix = bill.isInferred ? '≈ -₹' : '-₹';
                 final amountText = user.isPrivacyModeEnabled
-                    ? '$amountPrefix****'
-                    : '$amountPrefix${bill.predictedAmount.toStringAsFixed(0)}';
-                final confidenceText =
-                    bill.isInferred ? '${bill.confidence}% sure' : 'Confirmed';
+                    ? '$prefix****'
+                    : '$prefix${bill.predictedAmount.toStringAsFixed(2)}';
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       amountText,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: bill.isInferred
-                            ? AppColors.warningBorder
-                            : AppTheme.primaryPurple,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Outfit',
+                        color: Color(0xFFE63920),
                       ),
+                      textAlign: TextAlign.right,
                     ),
+                    const SizedBox(height: 2),
                     Text(
-                      confidenceText,
+                      bill.isInferred
+                          ? '${bill.confidence}% sure'
+                          : 'Confirmed',
                       style: TextStyle(
-                        fontSize: 10,
-                        color: Theme.of(context).brightness == Brightness.dark
+                        fontSize: 11,
+                        color: isDark
                             ? AppTheme.textGrayDark
                             : AppTheme.textGrayLight,
+                        fontFamily: 'Inter',
                       ),
                     ),
                   ],

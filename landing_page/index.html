@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker — Privacy-First Local Finance & Native SMS Parsing</title>
+    <meta name="description" content="An autonomous, local-first personal finance app with Android native SMS auto-parsing and WebAssembly local database. Zero telemetry, 100% data ownership.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo-badge">⚡</div>
+            <span>Expense Tracker</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#privacy">Privacy</a>
+            <a href="https://github.com/khadyot/expense-tracker" target="_blank" rel="noopener noreferrer" class="btn-secondary">GitHub Repo</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="pill-badge">
+                <span class="pulse-dot"></span>
+                <span>Local-First • Privacy Preserving • Zero Cloud Sync</span>
+            </div>
+            <h1 class="hero-title">Financial Clarity.<br><span class="gradient-text">Zero Data Leakage.</span></h1>
+            <p class="hero-subtitle">
+                A modern Flutter & Drift (SQLite) portfolio application demonstrating native OS bridge integration for automated SMS expense parsing and cross-platform WebAssembly local persistence.
+            </p>
+            <div class="cta-group">
+                <a href="https://expense-tracker-demo-wheat.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    <span class="btn-icon">🌐</span> Launch Web Demo (WASM)
+                </a>
+                <a href="https://github.com/khadyot/expense-tracker/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="btn-glass">
+                    <span class="btn-icon">📱</span> Download Android APK (v1.0.0)
+                </a>
+            </div>
+            <div class="platform-notice">
+                <span class="notice-badge">Platform Note</span>
+                <span>Web demo runs on WebAssembly SQLite & IndexedDB. Native SMS Auto-Parsing requires Android APK.</span>
+            </div>
+        </div>
+
+        <div class="hero-preview">
+            <div class="glass-card preview-card">
+                <div class="card-header">
+                    <div class="header-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Drift Web DB Connected (WASM)</span>
+                    </div>
+                    <span class="card-badge">Local Storage</span>
+                </div>
+                <div class="speedometer-mock">
+                    <div class="gauge-arc">
+                        <div class="gauge-fill"></div>
+                    </div>
+                    <div class="gauge-info">
+                        <span class="gauge-label">Monthly Budget Used</span>
+                        <span class="gauge-value">$1,840 <small>/ $2,500</small></span>
+                    </div>
+                </div>
+                <div class="transaction-list-mock">
+                    <div class="mock-item">
+                        <div class="item-icon income-icon">☕</div>
+                        <div class="item-details">
+                            <strong>Starbucks Coffee</strong>
+                            <span>Food & Dining • SMS Auto-Parsed</span>
+                        </div>
+                        <div class="item-amount">- $6.45</div>
+                    </div>
+                    <div class="mock-item">
+                        <div class="item-icon recurring-icon">👻</div>
+                        <div class="item-details">
+                            <strong>Netflix Subscription</strong>
+                            <span>Ghost Bill Prediction • Recurring</span>
+                        </div>
+                        <div class="item-amount">- $15.99</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features-section">
+        <div class="section-header">
+            <h2>Core Capabilities</h2>
+            <p>Engineered from the ground up to keep your financial graph strictly on your personal device.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="glass-card feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>Native SMS Auto-Parsing</h3>
+                <p>On Android, our Kotlin <code>SmsReceiver.kt</code> intercepts transactional SMS broadcasts in real-time. It extracts merchants, amounts, and payment sources locally using pattern regex without ever sending your messages to a remote server.</p>
+                <div class="tag-row">
+                    <span class="tag">Android Exclusive</span>
+                    <span class="tag">Kotlin MethodChannel</span>
+                </div>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Drift SQLite WebAssembly</h3>
+                <p>The web target utilizes compiled <code>sqlite3.wasm</code> alongside dedicated web workers to bring native-grade relational database queries and reactive stream subscriptions directly into the browser's IndexedDB sandbox.</p>
+                <div class="tag-row">
+                    <span class="tag">Web & Desktop</span>
+                    <span class="tag">Drift 2.34+</span>
+                </div>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon">👻</div>
+                <h3>Ghost Bills Prediction Engine</h3>
+                <p>Proprietary local statistical analysis identifies recurring subscription patterns across your transaction history, predicting upcoming liabilities and reserving budget headroom before charges hit your account.</p>
+                <div class="tag-row">
+                    <span class="tag">Local Intelligence</span>
+                    <span class="tag">Zero Analytics</span>
+                </div>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Glassmorphism UI Design</h3>
+                <p>Built strictly according to curated HSL color tokens, Outfit typography, and dynamic blur hierarchy (`backdrop-filter: blur(16px)`), giving users a visually stunning, premium dashboard aesthetic across dark and light modes.</p>
+                <div class="tag-row">
+                    <span class="tag">Flutter CanvasKit</span>
+                    <span class="tag">Fluid Micro-Animations</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="architecture-section">
+        <div class="glass-card arch-card">
+            <div class="arch-content">
+                <h2>Why Platform-Gating Matters</h2>
+                <p>
+                    Most financial apps compromise on privacy to offer web-to-mobile sync via cloud databases. <strong>Expense Tracker chooses absolute data sovereignty.</strong>
+                </p>
+                <div class="arch-comparison">
+                    <div class="compare-col">
+                        <h4>📱 Android Native App</h4>
+                        <ul>
+                            <li>Full <code>Permission.sms</code> runtime access</li>
+                            <li>Background Kotlin SMS Broadcast Receiver</li>
+                            <li>Biometric authentication (`local_auth`)</li>
+                            <li>Native file system CSV/PDF data exports</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col">
+                        <h4>🌐 Web Demo (WASM)</h4>
+                        <ul>
+                            <li>Sandboxed inside browser memory (`kIsWeb`)</li>
+                            <li>Transparently explains Android-only native features</li>
+                            <li>Instant interactive onboarding without installation</li>
+                            <li>Zero external network tracking or analytics requests</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>⚡ Expense Tracker Portfolio Showcase</span>
+                <p>Built with Flutter, Dart, Kotlin, and Drift SQLite.</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/khadyot/expense-tracker" target="_blank" rel="noopener noreferrer">Source Code</a>
+                <a href="https://github.com/khadyot/expense-tracker/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer">APK Release</a>
+                <a href="https://expense-tracker-demo-wheat.vercel.app" target="_blank" rel="noopener noreferrer">Live Demo</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

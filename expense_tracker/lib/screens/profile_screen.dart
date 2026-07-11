@@ -9,7 +9,7 @@ import 'help_support_screen.dart';
 import '../database/database.dart';
 import '../services/demo_seed_service.dart';
 import '../theme/app_colors.dart';
-import '../widgets/common/glass_container.dart';
+import '../widgets/common/soft_card.dart';
 import 'home_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -17,187 +17,189 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      backgroundColor:
+          isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: isDark ? AppTheme.textLight : AppTheme.textDark,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Outfit',
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          icon: Icon(Icons.arrow_back_ios_new_rounded,
+              color: isDark ? AppTheme.textLight : AppTheme.textDark),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppTheme.backgroundLight,
-              AppTheme.backgroundLight.withOpacity(0.8),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                // Profile Avatar & Info
-                Center(
-                  child: Consumer<UserProvider>(
-                    builder: (context, user, child) {
-                      return Column(
-                        children: [
-                          Container(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              // Profile Avatar & Info
+              Center(
+                child: Consumer<UserProvider>(
+                  builder: (context, user, child) {
+                    return Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: AppTheme.heroGradient,
+                          ),
+                          child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              gradient: AppTheme.purpleGradient,
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      AppTheme.primaryPurple.withOpacity(0.3),
-                                  blurRadius: 20,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
+                              color: isDark
+                                  ? AppTheme.backgroundDark
+                                  : Colors.white,
                             ),
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: const CircleAvatar(
-                                radius: 50,
-                                backgroundColor: AppTheme.backgroundLight,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 50,
-                                  color: AppTheme.primaryPurple,
-                                ),
+                            child: CircleAvatar(
+                              radius: 46,
+                              backgroundColor: isDark
+                                  ? const Color(0xFF262626)
+                                  : const Color(0xFFEEEEEE),
+                              child: Icon(
+                                Icons.person_rounded,
+                                size: 48,
+                                color: AppColors.heroGradientStart,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            user.name,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.textDark,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 40),
-
-                // Settings Section
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: AppTheme.glassmorphism(
-                    color: Colors.white,
-                    opacity: 0.6,
-                  ),
-                  child: Column(
-                    children: [
-                      _ProfileMenuItem(
-                        icon: Icons.person_outline_rounded,
-                        title: 'Edit Profile',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditProfileScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const Divider(
-                          height: 24, thickness: 1, color: Colors.black12),
-                      _ProfileMenuItem(
-                        icon: Icons.notifications_outlined,
-                        title: 'Notifications',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const NotificationSettingsScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const Divider(
-                          height: 24, thickness: 1, color: Colors.black12),
-                      _ProfileMenuItem(
-                        icon: Icons.lock_outline_rounded,
-                        title: 'Privacy & Security',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const PrivacySecurityScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const Divider(
-                          height: 24, thickness: 1, color: Colors.black12),
-                      _ProfileMenuItem(
-                        icon: Icons.help_outline_rounded,
-                        title: 'Help & Support',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HelpSupportScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Reset & Reload Demo Data Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => _showResetDialog(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppColors.dangerBorder,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(
-                          color: AppColors.dangerBorder.withValues(alpha: 0.2),
-                          width: 1,
                         ),
-                      ),
+                        const SizedBox(height: 16),
+                        Text(
+                          user.name,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'Outfit',
+                            color:
+                                isDark ? AppTheme.textLight : AppTheme.textDark,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Settings Section
+              SoftCard(
+                borderRadius: 20,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    _ProfileMenuItem(
+                      icon: Icons.person_outline_rounded,
+                      title: 'Edit Profile',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditProfileScreen(),
+                          ),
+                        );
+                      },
                     ),
-                    child: const Text(
-                      'Reset & Reload Demo Data',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                    Divider(
+                        height: 24,
+                        thickness: 1,
+                        color: Colors.grey.withValues(alpha: 0.15)),
+                    _ProfileMenuItem(
+                      icon: Icons.notifications_outlined,
+                      title: 'Notifications',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const NotificationSettingsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    Divider(
+                        height: 24,
+                        thickness: 1,
+                        color: Colors.grey.withValues(alpha: 0.15)),
+                    _ProfileMenuItem(
+                      icon: Icons.lock_outline_rounded,
+                      title: 'Privacy & Security',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PrivacySecurityScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    Divider(
+                        height: 24,
+                        thickness: 1,
+                        color: Colors.grey.withValues(alpha: 0.15)),
+                    _ProfileMenuItem(
+                      icon: Icons.help_outline_rounded,
+                      title: 'Help & Support',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HelpSupportScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Reset & Reload Demo Data Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => _showResetDialog(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        isDark ? const Color(0xFF262626) : Colors.white,
+                    foregroundColor: AppColors.dangerBorder,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(999),
+                      side: BorderSide(
+                        color: AppColors.dangerBorder.withValues(alpha: 0.3),
+                        width: 1,
                       ),
                     ),
                   ),
+                  child: const Text(
+                    'Reset & Reload Demo Data',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Outfit',
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -209,10 +211,11 @@ class ProfileScreen extends StatelessWidget {
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.5),
       builder: (BuildContext dialogContext) {
+        final isDark = Theme.of(dialogContext).brightness == Brightness.dark;
         return Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: GlassContainer(
+          child: SoftCard(
             borderRadius: 28.0,
             padding: const EdgeInsets.all(24),
             child: Column(
@@ -231,11 +234,13 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Reset & Reload Demo Data',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Outfit',
+                    color: isDark ? AppTheme.textLight : AppTheme.textDark,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -244,9 +249,9 @@ class ProfileScreen extends StatelessWidget {
                   'This will permanently delete all your transaction history and ghost bills, and replace them with fresh demo data. Are you sure you want to proceed?',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? AppTheme.textGrayDark
-                        : AppTheme.textGrayLight,
+                    color:
+                        isDark ? AppTheme.textGrayDark : AppTheme.textGrayLight,
+                    fontFamily: 'Inter',
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -259,11 +264,14 @@ class ProfileScreen extends StatelessWidget {
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Cancel',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
+                            color: isDark
+                                ? AppTheme.textGrayDark
+                                : AppTheme.textGrayLight,
                           ),
                         ),
                       ),
@@ -293,14 +301,15 @@ class ProfileScreen extends StatelessWidget {
                           elevation: 0,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(999),
                           ),
                         ),
                         child: const Text(
                           'Reset Data',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Outfit',
                           ),
                         ),
                       ),
@@ -329,39 +338,44 @@ class _ProfileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryPurple.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              color: AppTheme.primaryPurple,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: AppTheme.textDark,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.heroGradientStart.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.circle,
+                color: AppColors.heroGradientStart,
+                size: 20,
               ),
             ),
-          ),
-          const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 16,
-            color: AppTheme.textGray,
-          ),
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? AppTheme.textLight : AppTheme.textDark,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              color: isDark ? AppTheme.textGrayDark : AppTheme.textGrayLight,
+            ),
+          ],
+        ),
       ),
     );
   }

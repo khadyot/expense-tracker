@@ -369,15 +369,17 @@ class _NotificationSettingsScreenState
   }
 
   Widget _buildSettingsCard({required List<Widget> children}) {
-    return Container(
-      decoration: AppTheme.glassmorphism(
-        color: Colors.white,
-        opacity: 0.6,
-      ),
-      child: Column(
-        children: children,
-      ),
-    );
+    return Builder(builder: (context) {
+      return Container(
+        decoration: AppTheme.softDecoration(
+          isDark: Theme.of(context).brightness == Brightness.dark,
+          borderRadius: 20,
+        ),
+        child: Column(
+          children: children,
+        ),
+      );
+    });
   }
 }
 

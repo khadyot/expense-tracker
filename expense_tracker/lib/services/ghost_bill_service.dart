@@ -7,6 +7,15 @@ class GhostBillService {
 
   GhostBillService(this.database);
 
+  /// Calculates total predicted spend across all active ghost bills.
+  static double calculatePredictedSpend(List<GhostBill> bills) {
+    double total = 0.0;
+    for (final b in bills) {
+      total += b.predictedAmount;
+    }
+    return total;
+  }
+
   /// Evaluates historical transactions and returns detected GhostBills companions.
   static List<GhostBillsCompanion> evaluateTransactions(
       List<Transaction> transactions) {

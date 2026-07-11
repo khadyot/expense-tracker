@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
+import '../theme/app_colors.dart';
+import '../widgets/common/soft_card.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
@@ -23,110 +25,94 @@ class HelpSupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text('Help & Support'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppTheme.backgroundLight,
-              AppTheme.backgroundLight.withOpacity(0.8),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Text(
-                  'Frequently Asked Questions',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.textDark,
-                      ),
-                ),
-                const SizedBox(height: 20),
-                _buildFAQList(),
-                const SizedBox(height: 40),
-                _buildContactSection(context),
-                const SizedBox(height: 40),
-                const Center(
-                  child: Text(
-                    'Version 1.0.0',
-                    style: TextStyle(color: AppTheme.textGray, fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-  Widget _buildFAQList() {
     final faqs = [
       {
-        'q': 'How do I add an expense?',
+        'q': 'How does SMS detection work?',
         'a':
-            'Tap the "+" button on the home screen, enter the amount, select a category, and save.'
+            'We locally parse bank SMS to track your expenses automatically without sending any data to a cloud.'
       },
       {
-        'q': 'Can I track my income?',
-        'a':
-            'Yes! When adding a transaction, you can toggle between "Expense" and "Income".'
-      },
-      {
-        'q': 'Is my data backed up?',
+        'q': 'Are my transactions safe?',
         'a':
             'Currently, all data is stored locally on your device for maximum privacy.'
       },
       {
         'q': 'How do I change my currency?',
         'a':
-            'Go to Edit Profile in the Profile tab to change your preferred currency.'
+            'Expense Tracker uses Indian Rupees (₹) consistently for all transactions and budget tracking per standard local setup.'
       },
     ];
 
-    return Container(
-      decoration: AppTheme.glassmorphism(
-        color: Colors.white,
-        opacity: 0.6,
+    return Scaffold(
+      backgroundColor:
+          isDark ? AppTheme.backgroundDark : AppTheme.backgroundLight,
+      appBar: AppBar(
+        title: Text(
+          'Help & Support',
+          style: TextStyle(
+            color: isDark ? AppTheme.textLight : AppTheme.textDark,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Outfit',
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded,
+              color: isDark ? AppTheme.textLight : AppTheme.textDark),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      child: Column(
-        children: faqs
-            .map((faq) => _FAQTile(question: faq['q']!, answer: faq['a']!))
-            .toList(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Frequently Asked Questions',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Outfit',
+                  color: isDark ? AppTheme.textLight : AppTheme.textDark,
+                ),
+              ),
+              const SizedBox(height: 12),
+              SoftCard(
+                borderRadius: 20,
+                child: Column(
+                  children: faqs
+                      .map((faq) =>
+                          _FAQTile(question: faq['q']!, answer: faq['a']!))
+                      .toList(),
+                ),
+              ),
+              const SizedBox(height: 32),
+              _buildContactSection(context),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildContactSection(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: AppTheme.purpleGradient,
+        gradient: AppTheme.coralHeroGradient,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primaryPurple.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: AppColors.heroGradientStart.withValues(alpha: 0.25),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -140,32 +126,37 @@ class HelpSupportScreen extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Outfit',
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Our support team is always here to help you with any issues.',
+            'Our local-first support team is always here to help you with any issues.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 14,
+              fontFamily: 'Inter',
             ),
           ),
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () => _launchEmail(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: AppTheme.primaryPurple,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              backgroundColor: isDark ? AppColors.darkAccent : Colors.white,
+              foregroundColor:
+                  isDark ? Colors.white : AppColors.heroGradientStart,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+              elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(999),
               ),
             ),
             child: const Text(
               'Contact Support',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, fontFamily: 'Outfit'),
             ),
           ),
         ],
@@ -189,21 +180,22 @@ class _FAQTileState extends State<_FAQTile> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         ListTile(
           title: Text(
             widget.question,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: AppTheme.textDark,
+              color: isDark ? AppTheme.textLight : AppTheme.textDark,
             ),
           ),
           trailing: Icon(
             _isExpanded
                 ? Icons.keyboard_arrow_up_rounded
                 : Icons.keyboard_arrow_down_rounded,
-            color: AppTheme.primaryPurple,
+            color: AppColors.heroGradientStart,
           ),
           onTap: () {
             setState(() {
@@ -216,13 +208,16 @@ class _FAQTileState extends State<_FAQTile> {
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Text(
               widget.answer,
-              style: const TextStyle(
-                color: AppTheme.textGray,
+              style: TextStyle(
+                color: isDark ? AppTheme.textGrayDark : AppTheme.textGrayLight,
                 height: 1.5,
               ),
             ),
           ),
-        const Divider(height: 1, thickness: 1, color: Colors.black12),
+        Divider(
+            height: 1,
+            thickness: 1,
+            color: Colors.grey.withValues(alpha: 0.15)),
       ],
     );
   }

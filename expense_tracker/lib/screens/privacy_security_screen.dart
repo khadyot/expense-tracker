@@ -213,7 +213,7 @@ class PrivacySecurityScreen extends StatelessWidget {
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: AppTheme.glassmorphism(color: Colors.white, opacity: 0.6),
+      decoration: AppTheme.softDecoration(isDark: false, borderRadius: 20),
       child: Row(
         children: [
           Container(
@@ -255,7 +255,7 @@ class PrivacySecurityScreen extends StatelessWidget {
     Color? color,
   }) {
     return Container(
-      decoration: AppTheme.glassmorphism(color: Colors.white, opacity: 0.6),
+      decoration: AppTheme.softDecoration(isDark: false, borderRadius: 20),
       child: ListTile(
         onTap: onTap,
         leading: Container(
@@ -283,7 +283,7 @@ class PrivacySecurityScreen extends StatelessWidget {
   Widget _buildLockTypeSelection(
       BuildContext context, UserProvider userProvider) {
     return Container(
-      decoration: AppTheme.glassmorphism(color: Colors.white, opacity: 0.6),
+      decoration: AppTheme.softDecoration(isDark: false, borderRadius: 20),
       child: Column(
         children: [
           _buildLockOptionTile(
@@ -424,7 +424,8 @@ class PrivacySecurityScreen extends StatelessWidget {
       await Share.shareXFiles([
         XFile.fromData(
           Uint8List.fromList(csvData.codeUnits),
-          name: 'transactions_export_${DateTime.now().millisecondsSinceEpoch}.csv',
+          name:
+              'transactions_export_${DateTime.now().millisecondsSinceEpoch}.csv',
           mimeType: 'text/csv',
         ),
       ], text: 'My Expense Tracker Export');
